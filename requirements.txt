@@ -1,0 +1,7 @@
+tqdm==4.26.0
+requests==2.18.4
+pandas==0.25.0
+lxml==4.3.4
+aiohttp==3.7.4.post0
+asyncio_throttle==1.0.2
+paramiko==2.7.2

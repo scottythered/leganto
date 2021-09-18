@@ -1,0 +1,8 @@
+*.pyc
+*.csv
+password.txt
+*.log
+sftp_password.txt
+*.sh
+smtp_user.txt
+smtp_password.txt

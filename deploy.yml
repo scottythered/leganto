@@ -1,0 +1,75 @@
+- hosts: prod
+  remote_user: sudoer
+  become: yes
+  vars_files:
+    - password.yml
+  tasks:
+  - name: create group
+    group:
+      name: leganto
+      state: present
+  - name: create user
+    user:
+      name: leganto
+      group: leganto
+      home: /home/leganto
+      state: present
+  - name: ensure app root directory exists
+    file: path=/home/leganto/leganto state=directory owner=leganto group=leganto mode=755
+  - name: clone project
+    become_user: leganto
+    git:
+      repo: git@bitbucket.org:asulibraries/leganto.git
+      dest: /home/leganto/leganto
+      #force: yes
+  - name: make crontab
+    cron:
+      name: "leganto"
+      job: "/home/leganto/leganto/leganto_run_prod.sh >> /tmp/cron.out"
+      minute: 22
+      hour: 9
+      user: leganto
+
+  - name: add a sftp password file
+    file:
+      path: "/home/leganto/leganto/sftp_password.txt"
+      state: touch
+      owner: leganto
+      group: leganto
+  - name: add the sftp password from the vault
+    copy:
+      dest: "/home/leganto/leganto/sftp_password.txt"
+      content: "{{sftp_password}}"
+
+  - name: add an AWS Smtp Username file
+    file:
+      path: "/home/leganto/leganto/smtp_user.txt"
+      state: touch
+      owner: leganto
+      group: leganto
+  - name: add the AWS Smtp Username from the vault
+    copy:
+      dest: "/home/leganto/leganto/smtp_user.txt"
+      content: "{{smtp_user}}"
+
+  - name: add an AWS Smtp Password file
+    file:
+      path: "/home/leganto/leganto/smtp_password.txt"
+      state: touch
+      owner: leganto
+      group: leganto
+  - name: add the AWS Smtp Password from the vault
+    copy:
+      dest: "/home/leganto/leganto/smtp_password.txt"
+      content: "{{smtp_password}}"
+
+  - name: add a leganto_pass file
+    file:
+      path: "/home/leganto/leganto/leganto_pass.txt"
+      state: touch
+      owner: leganto
+      group: leganto
+  - name: add the leganto_pass from the vault
+    copy:
+      dest: "/home/leganto/leganto/leganto_pass.txt"
+      content: "{{leganto_pass}}"
