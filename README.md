@@ -39,21 +39,21 @@ Alma documentation: https://knowledge.exlibrisgroup.com/Leganto/Product_Document
 
 
 ## Deprecated Files
-1. `leganto_course_report.py` - this report queried the API for courses and looked at the courses created in the last day, then it checks to see if those new courses match any existing courses (with reading lists) that have the same course code and instructor. it emails those results. **Removed from production at the request of Bob Marley on  6/1/2021.**
+1. `leganto_course_report.py` - this report queried the API for courses and looked at the courses created in the last day, then it checks to see if those new courses match any existing courses (with reading lists) that have the same course code and instructor. it emails those results. **Removed from production on 6/1/2021.**
 2. `leganto_only_reports.py` - this script was used if timed-out API connection killed the original Leganto process during the Rollover report phase -- no longer used due to deprecation of (1) above. Replaced by `leganto_rollovers_only.py`.
 
 
 ## Deploying
 You can deploy this to the lsp-sync-dev or lsp-sync servers with the provided ansible deploy script:
 ```
-ansible-playbook deploy.yml --vault-id leganto_pass@/home/scottythered/.leganto_pass
+ansible-playbook deploy.yml --vault-id leganto_pass@/XXX
 ```
 
 It requires an ansible vault key located at `.leganto_pass`.
 
 You can view/decrypt with ansible-vault with commands like
 ```
-ansible-vault edit password.yml --vault-id leganto_pass@/home/scottythered/.leganto_pass --vault-password-file=/Users/ezoller/.leganto_pass
+ansible-vault edit password.yml --vault-id leganto_pass@/XXX --vault-password-file=/XXX
 ```
 where you specify the path to that password file
 
@@ -74,10 +74,10 @@ Each semester, a ticket in Service-now must be submitted to modify the terms in 
 3. Click "order now." They will call/contact you in some way. When they do, give them the new leganto-sftp password from LastPass.
 4. Use the ansible vault key (located at `.leganto_pass`) with the view/decrypt command while in the Leganto directory:
 ```
-sudo ansible-vault edit /mnt/c/git/leganto/password.yml --vault-id leganto_pass@/home/scottythered/.leganto_pass --vault-password-file=/home/scottythered/.leganto_pass
+sudo ansible-vault edit /mnt/c/git/leganto/password.yml --vault-id leganto_pass@/home/scottythered/.leganto_pass --vault-password-file=/XXX
 ```
 5. Enter the new LSP-Sync SFTP password from LastPass and write/quit using the VI command: `:wq`
 6. Update the git repo, then deploy:
 ```
-sudo ansible-playbook /mnt/c/git/leganto/deploy.yml -i /mnt/c/git/leganto/hosts --vault-id leganto_pass@/home/scottythered/.leganto_pass
+sudo ansible-playbook /mnt/c/git/leganto/deploy.yml -i /mnt/c/git/leganto/hosts --vault-id leganto_pass@/XXX
 ```
