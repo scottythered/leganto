@@ -66,18 +66,3 @@ UTO owns the CEM data needed for this integration; TOPS (Technical Operations Pr
 
 ## Query Changes
 Each semester, a ticket in Service-now must be submitted to modify the terms in the query that results in the data that UTO places on Libstor from CEM. You can do this by going to Service Now, creating a new Request under Infrastructure > Database > Request Administration. Then you choose Request Type Data Integration (SSIS) and Modify an existing integration. Enter the query terms you'd like to change, such as `Leganto/Alma CEM query should contain Cem_Courses.Asu_Strm IN ('2201', '2204')`
-
-
-## Password Changes
-1. Request a password change at https://asu.service-now.com -- assigned group: Technical Operations Production Support (TOPS).
-2. Details > More information: "Control-M job FTPLEGANTO01 that uses connection profile titled "Libstor" password has changed and needs to be updated. Please contact for new password."
-3. Click "order now." They will call/contact you in some way. When they do, give them the new leganto-sftp password from LastPass.
-4. Use the ansible vault key (located at `.leganto_pass`) with the view/decrypt command while in the Leganto directory:
-```
-sudo ansible-vault edit /mnt/c/git/leganto/password.yml --vault-id leganto_pass@/home/scottythered/.leganto_pass --vault-password-file=/XXX
-```
-5. Enter the new LSP-Sync SFTP password from LastPass and write/quit using the VI command: `:wq`
-6. Update the git repo, then deploy:
-```
-sudo ansible-playbook /mnt/c/git/leganto/deploy.yml -i /mnt/c/git/leganto/hosts --vault-id leganto_pass@/XXX
-```
